@@ -1,7 +1,7 @@
-# `stackstorm-ha` Helm chart Tests
+# `coditation-ha` Helm chart Tests
 
 This directory contains Helm chart tests, powered by [BATS](https://github.com/sstephenson/bats) Bash Automated Testing System.
-Despite the minimum amount of smoke tests written, they ensure that StackStorm was really deployed,
+Despite the minimum amount of smoke tests written, they ensure that Coditation was really deployed,
 works correctly at its core and alive end-to-end without checking deeply specific functionality or configuration.
 If something is terribly wrong, - it'll show up via failed tests.
 

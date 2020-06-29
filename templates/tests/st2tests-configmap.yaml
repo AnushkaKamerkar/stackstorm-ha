@@ -5,7 +5,7 @@ metadata:
   labels:
     app: st2tests
     tier: tests
-    vendor: stackstorm
+    vendor: coditation
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}

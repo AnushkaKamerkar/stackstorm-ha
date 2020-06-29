@@ -7,7 +7,7 @@ metadata:
   labels:
     app: st2-apply-rbac-definitions
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: enterprise
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
@@ -23,7 +23,7 @@ spec:
       labels:
         app: st2-apply-rbac-definitions
         tier: backend
-        vendor: stackstorm
+        vendor: coditation
         support: enterprise
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         release: {{ .Release.Name }}
@@ -53,11 +53,11 @@ spec:
           mountPath: /etc/st2/st2.user.conf
           subPath: st2.user.conf
         - name: st2-rbac-roles-vol
-          mountPath: /opt/stackstorm/rbac/roles/
+          mountPath: /opt/coditation/rbac/roles/
         - name: st2-rbac-assignments-vol
-          mountPath: /opt/stackstorm/rbac/assignments/
+          mountPath: /opt/coditation/rbac/assignments/
         - name: st2-rbac-mappings-vol
-          mountPath: /opt/stackstorm/rbac/mappings/
+          mountPath: /opt/coditation/rbac/mappings/
         # TODO: Find out default resource limits for this specific service (#5)
         #resources:
       volumes:
@@ -84,7 +84,7 @@ metadata:
   labels:
     app: st2
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: {{ template "supportMethod" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
@@ -100,7 +100,7 @@ spec:
       labels:
         app: st2
         tier: backend
-        vendor: stackstorm
+        vendor: coditation
         support: {{ template "supportMethod" . }}
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         release: {{ .Release.Name }}
@@ -136,7 +136,7 @@ spec:
         volumeMounts:
         - name: st2client-config-vol
           mountPath: /root/.st2/
-        # `st2 login` doesn't exit on failure correctly, use old methods instead. See bug: https://github.com/StackStorm/st2/issues/4338
+        # `st2 login` doesn't exit on failure correctly, use old methods instead. See bug: https://github.com/Coditation/st2/issues/4338
         command:
           - 'sh'
           - '-ec'
@@ -183,7 +183,7 @@ metadata:
   labels:
     app: st2
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: {{ template "supportMethod" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
@@ -199,7 +199,7 @@ spec:
       labels:
         app: st2
         tier: backend
-        vendor: stackstorm
+        vendor: coditation
         support: {{ template "supportMethod" . }}
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         release: {{ .Release.Name }}
@@ -235,7 +235,7 @@ spec:
         volumeMounts:
         - name: st2client-config-vol
           mountPath: /root/.st2/
-        # `st2 login` doesn't exit on failure correctly, use old methods instead. See bug: https://github.com/StackStorm/st2/issues/4338
+        # `st2 login` doesn't exit on failure correctly, use old methods instead. See bug: https://github.com/Coditation/st2/issues/4338
         command:
           - 'sh'
           - '-ec'
@@ -291,7 +291,7 @@ metadata:
   labels:
     app: st2-register-content
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: {{ template "supportMethod" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
@@ -307,7 +307,7 @@ spec:
       labels:
         app: st2-register-content
         tier: backend
-        vendor: stackstorm
+        vendor: coditation
         support: {{ template "supportMethod" . }}
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         release: {{ .Release.Name }}
@@ -333,28 +333,28 @@ spec:
         imagePullPolicy: {{ .Values.st2.packs.image.pullPolicy | quote }}
         volumeMounts:
         - name: st2-packs-vol
-          mountPath: /opt/stackstorm/packs-shared
+          mountPath: /opt/coditation/packs-shared
         - name: st2-virtualenvs-vol
-          mountPath: /opt/stackstorm/virtualenvs-shared
+          mountPath: /opt/coditation/virtualenvs-shared
         command:
           - 'sh'
           - '-ec'
           - |
-            /bin/cp -aR /opt/stackstorm/packs/. /opt/stackstorm/packs-shared &&
-            /bin/cp -aR /opt/stackstorm/virtualenvs/. /opt/stackstorm/virtualenvs-shared
+            /bin/cp -aR /opt/coditation/packs/. /opt/coditation/packs-shared &&
+            /bin/cp -aR /opt/coditation/virtualenvs/. /opt/coditation/virtualenvs-shared
       # System packs
       - name: st2-system-packs
         image: "{{ template "imageRepository" . }}/st2actionrunner{{ template "enterpriseSuffix" . }}:{{ .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         volumeMounts:
         - name: st2-packs-vol
-          mountPath: /opt/stackstorm/packs-shared
+          mountPath: /opt/coditation/packs-shared
         command:
           - 'sh'
           - '-ec'
           - |
-            /bin/cp -aR /opt/stackstorm/packs/. /opt/stackstorm/packs-shared &&
-            /bin/cp -aR /opt/stackstorm/virtualenvs/. /opt/stackstorm/virtualenvs-shared
+            /bin/cp -aR /opt/coditation/packs/. /opt/coditation/packs-shared &&
+            /bin/cp -aR /opt/coditation/virtualenvs/. /opt/coditation/virtualenvs-shared
       {{ end }}
       containers:
       - name: st2-register-content
@@ -375,12 +375,12 @@ spec:
           mountPath: /etc/st2/st2.user.conf
           subPath: st2.user.conf
         - name: st2-pack-configs-vol
-          mountPath: /opt/stackstorm/configs/
+          mountPath: /opt/coditation/configs/
         {{- if .Values.st2.packs.image.repository }}
         - name: st2-packs-vol
-          mountPath: /opt/stackstorm/packs/
+          mountPath: /opt/coditation/packs/
         - name: st2-virtualenvs-vol
-          mountPath: /opt/stackstorm/virtualenvs/
+          mountPath: /opt/coditation/virtualenvs/
         {{- end }}
         # TODO: Find out default resource limits for this specific service (#5)
         #resources:

@@ -7,7 +7,7 @@ metadata:
   labels:
     app: ingress
     tier: frontend
-    vendor: stackstorm
+    vendor: coditation
     support: {{ template "supportMethod" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"

@@ -1,4 +1,4 @@
-Congratulations! You have just deployed StackStorm {{ if .Values.enterprise.enabled }}Enterprise {{ end }}HA!
+Congratulations! You have just deployed Coditation {{ if .Values.enterprise.enabled }}Enterprise {{ end }}HA!
 
   ███████╗████████╗██████╗     ██╗  ██╗ █████╗      ██████╗ ██╗  ██╗
   ██╔════╝╚══██╔══╝╚════██╗    ██║  ██║██╔══██╗    ██╔═══██╗██║ ██╔╝
@@ -7,7 +7,7 @@ Congratulations! You have just deployed StackStorm {{ if .Values.enterprise.enab
   ███████║   ██║   ███████╗    ██║  ██║██║  ██║    ╚██████╔╝██║  ██╗
   ╚══════╝   ╚═╝   ╚══════╝    ╚═╝  ╚═╝╚═╝  ╚═╝     ╚═════╝ ╚═╝  ╚═╝
 
-1. Get the StackStorm Web UI URL:
+1. Get the Coditation Web UI URL:
 {{- if contains "LoadBalancer" .Values.st2web.service.type }}
 
 NOTE: It may take a few minutes for the LoadBalancer IP to be available.
@@ -48,9 +48,9 @@ export ST2CLIENT=$(kubectl get --namespace {{ .Release.Namespace }} pod -l app=s
 kubectl exec -it ${ST2CLIENT} -- st2 --version
 
 -----------------------------------------------------
-Thanks for trying StackStorm!
+Thanks for trying Coditation!
 {{- if .Values.enterprise.enabled }}
-Need help? Enterprise support: support@stackstorm.com
+Need help? Enterprise support: support@coditation.com
 {{- else }}
-Enterprise: https://stackstorm.com/#product
+Enterprise: https://coditation.com/#product
 {{- end }}

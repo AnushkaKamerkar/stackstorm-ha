@@ -6,7 +6,7 @@ metadata:
   labels:
     app: st2auth
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: {{ template "supportMethod" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
@@ -17,7 +17,7 @@ spec:
       app: st2auth
       support: {{ template "supportMethod" . }}
       release: {{ .Release.Name }}
-  # https://docs.stackstorm.com/reference/ha.html#st2auth
+  # https://docs.coditation.com/reference/ha.html#st2auth
   # Multiple st2auth processes can be behind a load balancer in an active-active configuration.
   replicas: {{ default 2 .Values.st2auth.replicas }}
   template:
@@ -25,7 +25,7 @@ spec:
       labels:
         app: st2auth
         tier: backend
-        vendor: stackstorm
+        vendor: coditation
         support: {{ template "supportMethod" . }}
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         release: {{ .Release.Name }}
@@ -87,7 +87,7 @@ spec:
         resources:
 {{ toYaml .Values.st2auth.resources | indent 10 }}
     {{- if .Values.st2auth.serviceAccount.attach }}
-      serviceAccountName: {{ template "stackstorm-ha.serviceAccountName" . }}
+      serviceAccountName: {{ template "coditation-ha.serviceAccountName" . }}
     {{- end }}
       volumes:
         - name: st2-config-vol
@@ -117,7 +117,7 @@ metadata:
   labels:
     app: st2api
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: {{ template "supportMethod" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
@@ -128,7 +128,7 @@ spec:
       app: st2api
       support: {{ template "supportMethod" . }}
       release: {{ .Release.Name }}
-  # https://docs.stackstorm.com/reference/ha.html#st2api
+  # https://docs.coditation.com/reference/ha.html#st2api
   # Multiple st2api process can be behind a load balancer in an active-active configuration.
   replicas: {{ default 2 .Values.st2api.replicas }}
   template:
@@ -136,7 +136,7 @@ spec:
       labels:
         app: st2api
         tier: backend
-        vendor: stackstorm
+        vendor: coditation
         support: {{ template "supportMethod" . }}
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         release: {{ .Release.Name }}
@@ -161,30 +161,30 @@ spec:
         imagePullPolicy: {{ .Values.st2.packs.image.pullPolicy | quote }}
         volumeMounts:
         - name: st2-packs-vol
-          mountPath: /opt/stackstorm/packs-shared
+          mountPath: /opt/coditation/packs-shared
         - name: st2-virtualenvs-vol
-          mountPath: /opt/stackstorm/virtualenvs-shared
+          mountPath: /opt/coditation/virtualenvs-shared
         command:
           - 'sh'
           - '-ec'
           - |
-            /bin/cp -aR /opt/stackstorm/packs/. /opt/stackstorm/packs-shared &&
-            /bin/cp -aR /opt/stackstorm/virtualenvs/. /opt/stackstorm/virtualenvs-shared
+            /bin/cp -aR /opt/coditation/packs/. /opt/coditation/packs-shared &&
+            /bin/cp -aR /opt/coditation/virtualenvs/. /opt/coditation/virtualenvs-shared
       # System packs
       - name: st2-system-packs
         image: "{{ template "imageRepository" . }}/st2actionrunner{{ template "enterpriseSuffix" . }}:{{ .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         volumeMounts:
         - name: st2-packs-vol
-          mountPath: /opt/stackstorm/packs-shared
+          mountPath: /opt/coditation/packs-shared
         - name: st2-virtualenvs-vol
-          mountPath: /opt/stackstorm/virtualenvs-shared
+          mountPath: /opt/coditation/virtualenvs-shared
         command:
           - 'sh'
           - '-ec'
           - |
-            /bin/cp -aR /opt/stackstorm/packs/. /opt/stackstorm/packs-shared &&
-            /bin/cp -aR /opt/stackstorm/virtualenvs/. /opt/stackstorm/virtualenvs-shared
+            /bin/cp -aR /opt/coditation/packs/. /opt/coditation/packs-shared &&
+            /bin/cp -aR /opt/coditation/virtualenvs/. /opt/coditation/virtualenvs-shared
       {{- end }}
       containers:
       - name: st2api{{ template "enterpriseSuffix" . }}
@@ -212,16 +212,16 @@ spec:
         {{- end }}
         {{- if .Values.st2.packs.image.repository }}
         - name: st2-packs-vol
-          mountPath: /opt/stackstorm/packs
+          mountPath: /opt/coditation/packs
           readOnly: true
         - name: st2-virtualenvs-vol
-          mountPath: /opt/stackstorm/virtualenvs
+          mountPath: /opt/coditation/virtualenvs
           readOnly: true
         {{- end }}
         resources:
 {{ toYaml .Values.st2api.resources | indent 10 }}
     {{- if .Values.st2api.serviceAccount.attach }}
-      serviceAccountName: {{ template "stackstorm-ha.serviceAccountName" . }}
+      serviceAccountName: {{ template "coditation-ha.serviceAccountName" . }}
     {{- end }}
       volumes:
         {{- if .Values.secrets.st2.datastore_crypto_key }}
@@ -262,7 +262,7 @@ metadata:
   labels:
     app: st2stream
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: {{ template "supportMethod" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
@@ -273,7 +273,7 @@ spec:
       app: st2stream
       support: {{ template "supportMethod" . }}
       release: {{ .Release.Name }}
-  # https://docs.stackstorm.com/reference/ha.html#st2stream
+  # https://docs.coditation.com/reference/ha.html#st2stream
   # Multiple st2stream process can be behind a load balancer in an active-active configuration.
   replicas: {{ default 2 .Values.st2stream.replicas }}
   template:
@@ -281,7 +281,7 @@ spec:
       labels:
         app: st2stream
         tier: backend
-        vendor: stackstorm
+        vendor: coditation
         support: {{ template "supportMethod" . }}
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         release: {{ .Release.Name }}
@@ -315,7 +315,7 @@ spec:
         resources:
 {{ toYaml .Values.st2stream.resources | indent 10 }}
     {{- if .Values.st2stream.serviceAccount.attach }}
-      serviceAccountName: {{ template "stackstorm-ha.serviceAccountName" . }}
+      serviceAccountName: {{ template "coditation-ha.serviceAccountName" . }}
     {{- end }}
       volumes:
         - name: st2-config-vol
@@ -342,7 +342,7 @@ metadata:
   labels:
     app: st2web
     tier: frontend
-    vendor: stackstorm
+    vendor: coditation
     support: {{ template "supportMethod" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
@@ -359,7 +359,7 @@ spec:
       labels:
         app: st2web
         tier: frontend
-        vendor: stackstorm
+        vendor: coditation
         support: {{ template "supportMethod" . }}
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         release: {{ .Release.Name }}
@@ -383,7 +383,7 @@ spec:
             port: 80
           initialDelaySeconds: 1
         # Probe to check if app is ready to serve traffic. Failure will lead to temp stop serving traffic.
-        # TODO: Failing to add readinessProbe, since st2 requires authorization (401) and we don't have `/healthz` endpoints yet (https://github.com/StackStorm/st2/issues/4020)
+        # TODO: Failing to add readinessProbe, since st2 requires authorization (401) and we don't have `/healthz` endpoints yet (https://github.com/Coditation/st2/issues/4020)
 #        readinessProbe:
 #          httpGet:
 #            # Probes can't check several endpoints, - this should be implemented on app side (@see https://www.ianlewis.org/en/using-kubernetes-health-checks)
@@ -401,7 +401,7 @@ spec:
         resources:
 {{ toYaml .Values.st2web.resources | indent 10 }}
     {{- if .Values.st2web.serviceAccount.attach }}
-      serviceAccountName: {{ template "stackstorm-ha.serviceAccountName" . }}
+      serviceAccountName: {{ template "coditation-ha.serviceAccountName" . }}
     {{- end }}
       volumes: []
     {{- with .Values.st2web.nodeSelector }}
@@ -420,12 +420,12 @@ spec:
 ---
 apiVersion: apps/v1
 kind: Deployment
-metadata:
+metadata:coditation
   name: {{ .Release.Name }}-st2rulesengine{{ template "enterpriseSuffix" . }}
   labels:
     app: st2rulesengine
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: {{ template "supportMethod" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
@@ -436,7 +436,7 @@ spec:
       app: st2rulesengine
       support: {{ template "supportMethod" . }}
       release: {{ .Release.Name }}
-  # https://docs.stackstorm.com/reference/ha.html#st2rulesengine
+  # https://docs.coditation.com/reference/ha.html#st2rulesengine
   # Multiple st2rulesengine processes can run in active-active with only connections to MongoDB and RabbitMQ. All these will share the TriggerInstance load and naturally pick up more work if one or more of the processes becomes unavailable.
   replicas: {{ default 2 .Values.st2rulesengine.replicas }}
   template:
@@ -444,7 +444,7 @@ spec:
       labels:
         app: st2rulesengine
         tier: backend
-        vendor: stackstorm
+        vendor: coditation
         support: {{ template "supportMethod" . }}
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         release: {{ .Release.Name }}
@@ -476,7 +476,7 @@ spec:
         resources:
 {{ toYaml .Values.st2rulesengine.resources | indent 10 }}
     {{- if .Values.st2rulesengine.serviceAccount.attach }}
-      serviceAccountName: {{ template "stackstorm-ha.serviceAccountName" . }}
+      serviceAccountName: {{ template "coditation-ha.serviceAccountName" . }}
     {{- end }}
       volumes:
         - name: st2-config-vol
@@ -511,7 +511,7 @@ metadata:
   labels:
     app: st2timersengine
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: {{ template "supportMethod" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
@@ -522,7 +522,7 @@ spec:
       app: st2timersengine
       support: {{ template "supportMethod" . }}
       release: {{ .Release.Name }}
-  # https://docs.stackstorm.com/reference/ha.html#st2timersengine
+  # https://docs.coditation.com/reference/ha.html#st2timersengine
   # Only single replica is created as timersengine can't work in active-active mode at the moment and it relies on
   # K8s failover/reschedule capabilities to address cases when the process fails.
   replicas: 1
@@ -531,7 +531,7 @@ spec:
       labels:
         app: st2timersengine
         tier: backend
-        vendor: stackstorm
+        vendor: coditation
         support: {{ template "supportMethod" . }}
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         release: {{ .Release.Name }}
@@ -563,7 +563,7 @@ spec:
         resources:
 {{ toYaml .Values.st2timersengine.resources | indent 10 }}
     {{- if .Values.st2timersengine.serviceAccount.attach }}
-      serviceAccountName: {{ template "stackstorm-ha.serviceAccountName" . }}
+      serviceAccountName: {{ template "coditation-ha.serviceAccountName" . }}
     {{- end }}
       volumes:
         - name: st2-config-vol
@@ -590,7 +590,7 @@ metadata:
   labels:
     app: st2workflowengine
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: {{ template "supportMethod" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
@@ -601,7 +601,7 @@ spec:
       app: st2workflowengine
       support: {{ template "supportMethod" . }}
       release: {{ .Release.Name }}
-  # https://docs.stackstorm.com/reference/ha.html#st2workflowengine
+  # https://docs.coditation.com/reference/ha.html#st2workflowengine
   # Multiple st2workflowengine processes can run in active-active mode and will share the load and pick up more work if one or more of the processes become available.
   replicas: {{ default 2 .Values.st2workflowengine.replicas }}
   template:
@@ -609,7 +609,7 @@ spec:
       labels:
         app: st2workflowengine
         tier: backend
-        vendor: stackstorm
+        vendor: coditation
         support: {{ template "supportMethod" . }}
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         release: {{ .Release.Name }}
@@ -647,7 +647,7 @@ spec:
         resources:
 {{ toYaml .Values.st2workflowengine.resources | indent 10 }}
     {{- if .Values.st2workflowengine.serviceAccount.attach }}
-      serviceAccountName: {{ template "stackstorm-ha.serviceAccountName" . }}
+      serviceAccountName: {{ template "coditation-ha.serviceAccountName" . }}
     {{- end }}
       volumes:
         - name: st2-config-vol
@@ -682,7 +682,7 @@ metadata:
   labels:
     app: st2scheduler
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: {{ template "supportMethod" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
@@ -693,14 +693,14 @@ spec:
       app: st2scheduler
       support: {{ template "supportMethod" . }}
       release: {{ .Release.Name }}
-  # https://docs.stackstorm.com/reference/ha.html#st2scheduler
+  # https://docs.coditation.com/reference/ha.html#st2scheduler
   replicas: {{ default 2 .Values.st2scheduler.replicas }}
   template:
     metadata:
       labels:
         app: st2scheduler
         tier: backend
-        vendor: stackstorm
+        vendor: coditation
         support: {{ template "supportMethod" . }}
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         release: {{ .Release.Name }}
@@ -732,7 +732,7 @@ spec:
         resources:
 {{ toYaml .Values.st2scheduler.resources | indent 10 }}
     {{- if .Values.st2scheduler.serviceAccount.attach }}
-      serviceAccountName: {{ template "stackstorm-ha.serviceAccountName" . }}
+      serviceAccountName: {{ template "coditation-ha.serviceAccountName" . }}
     {{- end }}
       volumes:
         - name: st2-config-vol
@@ -759,7 +759,7 @@ metadata:
   labels:
     app: st2notifier
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: {{ template "supportMethod" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
@@ -770,7 +770,7 @@ spec:
       app: st2notifier
       support: {{ template "supportMethod" . }}
       release: {{ .Release.Name }}
-  # https://docs.stackstorm.com/reference/ha.html#st2notifier
+  # https://docs.coditation.com/reference/ha.html#st2notifier
   # st2notifier runs in active-active mode and requires for that coordination backend like Redis or Zookeeper
   replicas: {{ default 2 .Values.st2notifier.replicas }}
   template:
@@ -778,7 +778,7 @@ spec:
       labels:
         app: st2notifier
         tier: backend
-        vendor: stackstorm
+        vendor: coditation
         support: {{ template "supportMethod" . }}
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         release: {{ .Release.Name }}
@@ -810,7 +810,7 @@ spec:
         resources:
 {{ toYaml .Values.st2notifier.resources | indent 10 }}
     {{- if .Values.st2notifier.serviceAccount.attach }}
-      serviceAccountName: {{ template "stackstorm-ha.serviceAccountName" . }}
+      serviceAccountName: {{ template "coditation-ha.serviceAccountName" . }}
     {{- end }}
       volumes:
         - name: st2-config-vol
@@ -838,7 +838,7 @@ metadata:
   labels:
     app: st2sensorcontainer{{ template "hyphenPrefix" .name }}
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: {{ template "supportMethod" $ }}
     chart: {{ $.Chart.Name }}-{{ $.Chart.Version }}
     release: {{ $.Release.Name }}
@@ -849,7 +849,7 @@ spec:
       app: st2sensorcontainer{{ template "hyphenPrefix" .name }}
       support: {{ template "supportMethod" $ }}
       release: {{ $.Release.Name }}
-  # https://docs.stackstorm.com/reference/ha.html#st2sensorcontainer
+  # https://docs.coditation.com/reference/ha.html#st2sensorcontainer
   # It is possible to run st2sensorcontainer in HA mode by running one process on each compute instance. Each sensor node needs to be
   # provided with proper partition information to share work with other sensor nodes so that the same sensor does not run on different nodes.
   # See Partitioning Sensors for information on how to partition sensors.
@@ -859,7 +859,7 @@ spec:
       labels:
         app: st2sensorcontainer{{ template "hyphenPrefix" .name }}
         tier: backend
-        vendor: stackstorm
+        vendor: coditation
         support: {{ template "supportMethod" $ }}
         chart: {{ $.Chart.Name }}-{{ $.Chart.Version }}
         release: {{ $.Release.Name }}
@@ -888,28 +888,28 @@ spec:
         imagePullPolicy: {{ $.Values.st2.packs.image.pullPolicy | quote }}
         volumeMounts:
         - name: st2-packs-vol
-          mountPath: /opt/stackstorm/packs-shared
+          mountPath: /opt/coditation/packs-shared
         - name: st2-virtualenvs-vol
-          mountPath: /opt/stackstorm/virtualenvs-shared
+          mountPath: /opt/coditation/virtualenvs-shared
         command:
           - 'sh'
           - '-ec'
           - |
-            /bin/cp -aR /opt/stackstorm/packs/. /opt/stackstorm/packs-shared &&
-            /bin/cp -aR /opt/stackstorm/virtualenvs/. /opt/stackstorm/virtualenvs-shared
+            /bin/cp -aR /opt/coditation/packs/. /opt/coditation/packs-shared &&
+            /bin/cp -aR /opt/coditation/virtualenvs/. /opt/coditation/virtualenvs-shared
       # System packs
       - name: st2-system-packs
         image: "{{ template "imageRepository" $ }}/st2actionrunner{{ template "enterpriseSuffix" $ }}:{{ $.Chart.AppVersion }}"
         imagePullPolicy: {{ $.Values.image.pullPolicy }}
         volumeMounts:
         - name: st2-packs-vol
-          mountPath: /opt/stackstorm/packs-shared
+          mountPath: /opt/coditation/packs-shared
         command:
           - 'sh'
           - '-ec'
           - |
-            /bin/cp -aR /opt/stackstorm/packs/. /opt/stackstorm/packs-shared &&
-            /bin/cp -aR /opt/stackstorm/virtualenvs/. /opt/stackstorm/virtualenvs-shared
+            /bin/cp -aR /opt/coditation/packs/. /opt/coditation/packs-shared &&
+            /bin/cp -aR /opt/coditation/virtualenvs/. /opt/coditation/virtualenvs-shared
       {{- end }}
       containers:
       - name: st2sensorcontainer{{ template "hyphenPrefix" .name }}{{ template "enterpriseSuffix" $ }}
@@ -926,7 +926,7 @@ spec:
         {{- end }}
         {{- if .ref }}
         command:
-          - /opt/stackstorm/st2/bin/st2sensorcontainer
+          - /opt/coditation/st2/bin/st2sensorcontainer
           - --config-file=/etc/st2/st2.conf
           - --config-file=/etc/st2/st2.docker.conf
           - --config-file=/etc/st2/st2.user.conf
@@ -945,10 +945,10 @@ spec:
           subPath: st2.user.conf
         {{- if $.Values.st2.packs.image.repository }}
         - name: st2-packs-vol
-          mountPath: /opt/stackstorm/packs
+          mountPath: /opt/coditation/packs
           readOnly: true
         - name: st2-virtualenvs-vol
-          mountPath: /opt/stackstorm/virtualenvs
+          mountPath: /opt/coditation/virtualenvs
           readOnly: true
         {{- end }}
         {{- if $.Values.secrets.st2.datastore_crypto_key }}
@@ -959,7 +959,7 @@ spec:
         resources:
 {{ toYaml .resources | indent 10 }}
     {{- if .serviceAccount.attach }}
-      serviceAccountName: {{ template "stackstorm-ha.serviceAccountName" $ }}
+      serviceAccountName: {{ template "coditation-ha.serviceAccountName" $ }}
     {{- end }}
       volumes:
         {{- if $.Values.secrets.st2.datastore_crypto_key }}
@@ -1001,7 +1001,7 @@ metadata:
   labels:
     app: st2actionrunner
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: {{ template "supportMethod" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
@@ -1012,16 +1012,16 @@ spec:
       app: st2actionrunner
       support: {{ template "supportMethod" . }}
       release: {{ .Release.Name }}
-  # https://docs.stackstorm.com/reference/ha.html#st2actionrunner
+  # https://docs.coditation.com/reference/ha.html#st2actionrunner
   # Multiple st2actionrunner processes can run in active-active with only connections to MongoDB and RabbitMQ. Work gets naturally
-  # distributed across runners via RabbitMQ. Adding more st2actionrunner processes increases the ability of StackStorm to execute actions.
+  # distributed across runners via RabbitMQ. Adding more st2actionrunner processes increases the ability of Coditation to execute actions.
   replicas: {{ default 5 .Values.st2actionrunner.replicas }}
   template:
     metadata:
       labels:
         app: st2actionrunner
         tier: backend
-        vendor: stackstorm
+        vendor: coditation
         support: {{ template "supportMethod" . }}
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         release: {{ .Release.Name }}
@@ -1054,28 +1054,28 @@ spec:
         imagePullPolicy: {{ .Values.st2.packs.image.pullPolicy | quote }}
         volumeMounts:
         - name: st2-packs-vol
-          mountPath: /opt/stackstorm/packs-shared
+          mountPath: /opt/coditation/packs-shared
         - name: st2-virtualenvs-vol
-          mountPath: /opt/stackstorm/virtualenvs-shared
+          mountPath: /opt/coditation/virtualenvs-shared
         command:
           - 'sh'
           - '-ec'
           - |
-            /bin/cp -aR /opt/stackstorm/packs/. /opt/stackstorm/packs-shared &&
-            /bin/cp -aR /opt/stackstorm/virtualenvs/. /opt/stackstorm/virtualenvs-shared
+            /bin/cp -aR /opt/coditation/packs/. /opt/coditation/packs-shared &&
+            /bin/cp -aR /opt/coditation/virtualenvs/. /opt/coditation/virtualenvs-shared
       # System packs
       - name: st2-system-packs
         image: "{{ template "imageRepository" . }}/st2actionrunner{{ template "enterpriseSuffix" . }}:{{ .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         volumeMounts:
         - name: st2-packs-vol
-          mountPath: /opt/stackstorm/packs-shared
+          mountPath: /opt/coditation/packs-shared
         command:
           - 'sh'
           - '-ec'
           - |
-            /bin/cp -aR /opt/stackstorm/packs/. /opt/stackstorm/packs-shared &&
-            /bin/cp -aR /opt/stackstorm/virtualenvs/. /opt/stackstorm/virtualenvs-shared
+            /bin/cp -aR /opt/coditation/packs/. /opt/coditation/packs-shared &&
+            /bin/cp -aR /opt/coditation/virtualenvs/. /opt/coditation/virtualenvs-shared
       {{- end }}
       containers:
       - name: st2actionrunner{{ template "enterpriseSuffix" . }}
@@ -1104,16 +1104,16 @@ spec:
         {{- end }}
         {{- if .Values.st2.packs.image.repository }}
         - name: st2-packs-vol
-          mountPath: /opt/stackstorm/packs
+          mountPath: /opt/coditation/packs
           readOnly: true
         - name: st2-virtualenvs-vol
-          mountPath: /opt/stackstorm/virtualenvs
+          mountPath: /opt/coditation/virtualenvs
           readOnly: true
         {{- end }}
         resources:
 {{ toYaml .Values.st2actionrunner.resources | indent 10 }}
     {{- if .Values.st2actionrunner.serviceAccount.attach }}
-      serviceAccountName: {{ template "stackstorm-ha.serviceAccountName" . }}
+      serviceAccountName: {{ template "coditation-ha.serviceAccountName" . }}
     {{- end }}
       volumes:
         {{- if .Values.secrets.st2.datastore_crypto_key }}
@@ -1162,7 +1162,7 @@ metadata:
   labels:
     app: st2garbagecollector
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: {{ template "supportMethod" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
@@ -1173,7 +1173,7 @@ spec:
       app: st2garbagecollector
       support: {{ template "supportMethod" . }}
       release: {{ .Release.Name }}
-  # https://docs.stackstorm.com/reference/ha.html#st2garbagecollector
+  # https://docs.coditation.com/reference/ha.html#st2garbagecollector
   # Having 1 st2garbagecollector unique replica is enough for periodic task like st2 history garbage collection
   replicas: {{ default 1 .Values.st2garbagecollector.replicas }}
   template:
@@ -1181,7 +1181,7 @@ spec:
       labels:
         app: st2garbagecollector
         tier: backend
-        vendor: stackstorm
+        vendor: coditation
         support: {{ template "supportMethod" . }}
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         release: {{ .Release.Name }}
@@ -1213,7 +1213,7 @@ spec:
         resources:
 {{ toYaml .Values.st2garbagecollector.resources | indent 10 }}
     {{- if .Values.st2garbagecollector.serviceAccount.attach }}
-      serviceAccountName: {{ template "stackstorm-ha.serviceAccountName" . }}
+      serviceAccountName: {{ template "coditation-ha.serviceAccountName" . }}
     {{- end }}
       volumes:
         - name: st2-config-vol
@@ -1240,7 +1240,7 @@ metadata:
   labels:
     app: st2client
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: {{ template "supportMethod" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
@@ -1257,7 +1257,7 @@ spec:
       labels:
         app: st2client
         tier: backend
-        vendor: stackstorm
+        vendor: coditation
         support: {{ template "supportMethod" . }}
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         release: {{ .Release.Name }}
@@ -1288,28 +1288,28 @@ spec:
         imagePullPolicy: {{ .Values.st2.packs.image.pullPolicy | quote }}
         volumeMounts:
         - name: st2-packs-vol
-          mountPath: /opt/stackstorm/packs-shared
+          mountPath: /opt/coditation/packs-shared
         - name: st2-virtualenvs-vol
-          mountPath: /opt/stackstorm/virtualenvs-shared
+          mountPath: /opt/coditation/virtualenvs-shared
         command:
           - 'sh'
           - '-ec'
           - |
-            /bin/cp -aR /opt/stackstorm/packs/. /opt/stackstorm/packs-shared &&
-            /bin/cp -aR /opt/stackstorm/virtualenvs/. /opt/stackstorm/virtualenvs-shared
+            /bin/cp -aR /opt/coditation/packs/. /opt/coditation/packs-shared &&
+            /bin/cp -aR /opt/coditation/virtualenvs/. /opt/coditation/virtualenvs-shared
       # System packs
       - name: st2-system-packs
         image: "{{ template "imageRepository" . }}/st2actionrunner{{ template "enterpriseSuffix" . }}:{{ .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         volumeMounts:
         - name: st2-packs-vol
-          mountPath: /opt/stackstorm/packs-shared
+          mountPath: /opt/coditation/packs-shared
         command:
           - 'sh'
           - '-ec'
           - |
-            /bin/cp -aR /opt/stackstorm/packs/. /opt/stackstorm/packs-shared &&
-            /bin/cp -aR /opt/stackstorm/virtualenvs/. /opt/stackstorm/virtualenvs-shared
+            /bin/cp -aR /opt/coditation/packs/. /opt/coditation/packs-shared &&
+            /bin/cp -aR /opt/coditation/virtualenvs/. /opt/coditation/virtualenvs-shared
       {{- end }}
       # Sidecar container for generating st2client config with st2 username & password pair and sharing produced file with the main container
       - name: generate-st2client-config
@@ -1332,7 +1332,7 @@ spec:
         volumeMounts:
         - name: st2client-config-vol
           mountPath: /root/.st2/
-        # `st2 login` doesn't exit on failure correctly, use old methods instead. See bug: https://github.com/StackStorm/st2/issues/4338
+        # `st2 login` doesn't exit on failure correctly, use old methods instead. See bug: https://github.com/Coditation/st2/issues/4338
         command:
           - 'sh'
           - '-ec'
@@ -1361,14 +1361,14 @@ spec:
           subPath: st2.user.conf
         {{- if .Values.enterprise.enabled }}
         - name: st2-rbac-roles-vol
-          mountPath: /opt/stackstorm/rbac/roles/
+          mountPath: /opt/coditation/rbac/roles/
         - name: st2-rbac-assignments-vol
-          mountPath: /opt/stackstorm/rbac/assignments/
+          mountPath: /opt/coditation/rbac/assignments/
         - name: st2-rbac-mappings-vol
-          mountPath: /opt/stackstorm/rbac/mappings/
+          mountPath: /opt/coditation/rbac/mappings/
         {{- end }}
         - name: st2-pack-configs-vol
-          mountPath: /opt/stackstorm/configs/
+          mountPath: /opt/coditation/configs/
         - name: st2client-config-vol
           mountPath: /root/.st2/
         - name: st2-ssh-key-vol
@@ -1381,10 +1381,10 @@ spec:
         {{- end }}
         {{- if .Values.st2.packs.image.repository }}
         - name: st2-packs-vol
-          mountPath: /opt/stackstorm/packs
+          mountPath: /opt/coditation/packs
           readOnly: true
         - name: st2-virtualenvs-vol
-          mountPath: /opt/stackstorm/virtualenvs
+          mountPath: /opt/coditation/virtualenvs
           readOnly: true
         {{- end }}
         command:
@@ -1448,7 +1448,7 @@ metadata:
   labels:
     app: st2chatops
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: {{ template "supportMethod" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
@@ -1466,7 +1466,7 @@ spec:
       labels:
         app: st2chatops
         tier: backend
-        vendor: stackstorm
+        vendor: coditation
         support: {{ template "supportMethod" . }}
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         release: {{ .Release.Name }}
@@ -1476,7 +1476,7 @@ spec:
     spec:
       containers:
       - name: st2chatops{{ template "enterpriseSuffix" . }}
-        image: "{{ .Values.st2chatops.image.repository | default "stackstorm" }}/{{ .Values.st2chatops.image.name | default "st2chatops" }}:{{ tpl (.Values.st2chatops.image.tag | default .Chart.AppVersion) . }}"
+        image: "{{ .Values.st2chatops.image.repository | default "coditation" }}/{{ .Values.st2chatops.image.name | default "st2chatops" }}:{{ tpl (.Values.st2chatops.image.tag | default .Chart.AppVersion) . }}"
         imagePullPolicy: {{ .Values.st2chatops.image.pullPolicy | default .Values.image.pullPolicy }}
         env:
         - name: ST2_AUTH_USERNAME
@@ -1510,7 +1510,7 @@ spec:
         resources:
 {{ toYaml .Values.st2chatops.resources | indent 10 }}
     {{- if .Values.st2chatops.serviceAccount.attach }}
-        serviceAccountName: {{ template "stackstorm-ha.serviceAccountName" . }}
+        serviceAccountName: {{ template "coditation-ha.serviceAccountName" . }}
     {{- end }}
     {{- with .Values.st2chatops.nodeSelector }}
       nodeSelector:

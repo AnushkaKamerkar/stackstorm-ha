@@ -5,11 +5,11 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-st2-rbac-roles
   annotations:
-    description: Custom StackStorm RBAC roles, shipped in '/opt/stackstorm/rbac/roles/'
+    description: Custom Coditation RBAC roles, shipped in '/opt/coditation/rbac/roles/'
   labels:
     app: st2
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: enterprise
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
@@ -23,11 +23,11 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-st2-rbac-assignments
   annotations:
-    description: Custom StackStorm RBAC role assignments, shipped in '/opt/stackstorm/rbac/assignments/'
+    description: Custom Coditation RBAC role assignments, shipped in '/opt/coditation/rbac/assignments/'
   labels:
     app: st2
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: enterprise
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
@@ -41,11 +41,11 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-st2-rbac-mappings
   annotations:
-    description: StackStorm RBAC LDAP groups-to-roles mapping rules, shipped in '/opt/stackstorm/rbac/mappings/'
+    description: Coditation RBAC LDAP groups-to-roles mapping rules, shipped in '/opt/coditation/rbac/mappings/'
   labels:
     app: st2
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: enterprise
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}

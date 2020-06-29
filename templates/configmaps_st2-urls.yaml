@@ -4,11 +4,11 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-st2-urls
   annotations:
-    description: StackStorm service URLs, used across entire st2 cluster
+    description: Coditation service URLs, used across entire st2 cluster
   labels:
     app: st2
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: {{ template "supportMethod" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}

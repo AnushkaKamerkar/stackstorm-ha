@@ -5,7 +5,7 @@ orbs:
   # https://circleci.com/orbs/registry/orb/circleci/kubernetes
   kubernetes: circleci/kubernetes@0.11.0
   # Pins Helm to v2.x
-  # TODO: Consider upgrading Helm to v3.0 (https://github.com/StackStorm/stackstorm-ha/issues/98)
+  # TODO: Consider upgrading Helm to v3.0 (https://github.com/Coditation/coditation-ha/issues/98)
   # https://circleci.com/orbs/registry/orb/circleci/helm
   helm: circleci/helm@0.2.3
   # https://circleci.com/orbs/registry/orb/ccpgames/minikube
@@ -14,9 +14,9 @@ orbs:
 jobs:
   # Run Helm Lint checks
   helm-lint:
-    working_directory: ~/stackstorm-ha
+    working_directory: ~/coditation-ha
     docker:
-      # Pin Helm to v2.x, see https://github.com/StackStorm/stackstorm-ha/issues/98
+      # Pin Helm to v2.x, see https://github.com/Coditation/coditation-ha/issues/98
       - image: lachlanevenson/k8s-helm:v2.16.9
     steps:
       - checkout
@@ -39,13 +39,13 @@ jobs:
             helm template --output-dir community .
             helm template --output-dir enterprise --set enterprise.enabled=true --set enterprise.license=123asd456fake .
       - persist_to_workspace:
-          root: ~/stackstorm-ha/
+          root: ~/coditation-ha/
           paths:
             - community
             - enterprise
             # TODO: Fill an issue in https://github.com/garethr/kubeval
             # 'charts' contains 3rd party templates which doesn't validate against schema due to minor 'object != null' API validation issues
-            # See: https://circleci.com/gh/StackStorm/stackstorm-enterprise-ha/18
+            # See: https://circleci.com/gh/Coditation/coditation-enterprise-ha/18
             #- charts
 
   # Run Kubernetes lint checks
@@ -58,16 +58,16 @@ jobs:
       - run:
           name: K8s Kubeval Lint Check (Community)
           command: kubeval $(find . -type f)
-          working_directory: community/stackstorm-ha/templates/
+          working_directory: community/coditation-ha/templates/
       - run:
           name: K8s Kubeval Lint Check (Enterprise)
           command: kubeval $(find . -type f)
-          working_directory: enterprise/stackstorm-ha/templates/
+          working_directory: enterprise/coditation-ha/templates/
 
   # Spin up minikube K8s cluster and run Helm chart & e2e tests on it
   helm-e2e:
     # 'large' 4 vCPUs & 15GB RAM CircleCI machine executor
-    # required to deploy heavy 'stackstorm-ha' Helm release with RabbitMQ, MongoDB, etcd clusters and 25+ st2 Pods.
+    # required to deploy heavy 'coditation-ha' Helm release with RabbitMQ, MongoDB, etcd clusters and 25+ st2 Pods.
     # https://circleci.com/docs/2.0/configuration-reference/#machine-executor-linux
     resource_class: large
     machine:
@@ -93,24 +93,24 @@ jobs:
             CHANGE_MINIKUBE_NONE_USER: true
       - helm/install-helm-on-cluster
       - run:
-          name: Update stackstorm-ha chart dependencies
+          name: Update coditation-ha chart dependencies
           command: helm dependency update
       - run:
-          name: Helm install stackstorm-ha chart (Community)
-          command: helm install --timeout 600 --debug --wait --name stackstorm-ha .
+          name: Helm install coditation-ha chart (Community)
+          command: helm install --timeout 600 --debug --wait --name coditation-ha .
       - run:
           name: Helm test (Community)
-          command: helm test stackstorm-ha --parallel --cleanup
+          command: helm test coditation-ha --parallel --cleanup
       - run:
           when: always
           name: Show created K8s resources (Community)
           command: kubectl get all
       - run:
-          name: Helm upgrade stackstorm-ha (Community -> Enterprise)
-          command: helm upgrade --wait stackstorm-ha . --set enterprise.enabled=true --set enterprise.license=${EWC_LICENSE}
+          name: Helm upgrade coditation-ha (Community -> Enterprise)
+          command: helm upgrade --wait coditation-ha . --set enterprise.enabled=true --set enterprise.license=${EWC_LICENSE}
       - run:
           name: Helm test (Enterprise)
-          command: helm test stackstorm-ha --parallel
+          command: helm test coditation-ha --parallel
       - run:
           when: always
           name: Show created K8s resources (Enterprise)

@@ -1,12 +1,12 @@
 # Expand the name of the chart.
-{{- define "stackstorm-ha.name" -}}
+{{- define "coditation-ha.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-# Image pull secret used to access private docker.stackstorm.com Docker registry with Enterprise images
+# Image pull secret used to access private docker.coditation.com Docker registry with Enterprise images
 {{- define "imagePullSecret" }}
 {{- if required "Missing context '.Values.enterprise.enabled'!" .Values.enterprise.enabled -}}
-{{- printf "{\"auths\": {\"%s\": {\"auth\": \"%s\"}}}" "docker.stackstorm.com" (printf "%s:%s" .Values.enterprise.license .Values.enterprise.license | b64enc) | b64enc }}
+{{- printf "{\"auths\": {\"%s\": {\"auth\": \"%s\"}}}" "docker.coditation.com" (printf "%s:%s" .Values.enterprise.license .Values.enterprise.license | b64enc) | b64enc }}
 {{- end -}}
 {{- end }}
 
@@ -19,21 +19,21 @@ community
 {{- end -}}
 {{- end }}
 
-# Generate Docker image repository: Private 'docker.stackstorm.com' for Enterprise vs Public Docker Hub 'stackstorm' for FOSS version
+# Generate Docker image repository: Private 'docker.coditation.com' for Enterprise vs Public Docker Hub 'coditation' for FOSS version
 {{- define "imageRepository" -}}
 {{- if required "Missing context '.Values.enterprise.enabled'!" .Values.enterprise.enabled -}}
-docker.stackstorm.com
+docker.coditation.com
 {{- else if .Values.image.repository -}}
 {{ .Values.image.repository }}
 {{- else -}}
-stackstorm
+coditation
 {{- end -}}
 {{- end -}}
 
 {{/*
-Create the name of the stackstorm-ha service account to use
+Create the name of the coditation-ha service account to use
 */}}
-{{- define "stackstorm-ha.serviceAccountName" -}}
+{{- define "coditation-ha.serviceAccountName" -}}
 {{- default .Chart.Name .Values.serviceAccount.serviceAccountName -}}
 {{- end -}}
 

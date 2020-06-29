@@ -4,11 +4,11 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-st2-config
   annotations:
-    description: Custom StackStorm config which will apply settings on top of default st2.conf
+    description: Custom Coditation config which will apply settings on top of default st2.conf
   labels:
     app: st2
     tier: backend
-    vendor: stackstorm
+    vendor: coditation
     support: {{ template "supportMethod" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}

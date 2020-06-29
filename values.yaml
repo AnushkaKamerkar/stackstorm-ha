@@ -1,42 +1,42 @@
-# Default values for StackStorm HA cluster
+# Default values for Coditation HA cluster
 # This is a YAML-formatted file.
 
 ##
-## Docker image settings, applied to all StackStorm pods
+## Docker image settings, applied to all Coditation pods
 ##
 image:
   # Image pull policy. Change to "IfNotPresent" when switching to stable images
   pullPolicy: Always
-  # st2 image repository. Set this to override the default ("stackstorm") or enterprise
-  # docker image repository ("docker.stackstorm.com"). Applies to all st2 containers except
+  # st2 image repository. Set this to override the default ("coditation") or enterprise
+  # docker image repository ("docker.coditation.com"). Applies to all st2 containers except
   # st2chatops and st2packs (which have their own override). This also does not impact 
   # dependencies such as mongo or redis, which have their own helm chart settings.
   repository: ""
 
 
 ##
-## StackStorm Enterprise settings (Optional)
+## Coditation Enterprise settings (Optional)
 ##
 enterprise:
-  # Enable/Disable StackStorm Enterprise. Enabling will download StackStorm Enterprise Docker images.
+  # Enable/Disable Coditation Enterprise. Enabling will download Coditation Enterprise Docker images.
   enabled: false
-  # Required StackStorm Enterprise license key.
-  # Don't have one? Obtain 90-day free trial at https://stackstorm.com/#product
+  # Required Coditation Enterprise license key.
+  # Don't have one? Obtain 90-day free trial at https://coditation.com/#product
   license: ""
 
-  # StackStorm Role Based Access Control settings (https://docs.stackstorm.com/rbac.html)
+  # Coditation Role Based Access Control settings (https://docs.coditation.com/rbac.html)
   rbac:
-    # Custom StackStorm RBAC roles, shipped in '/opt/stackstorm/rbac/roles/'
-    # See https://docs.stackstorm.com/rbac.html#defining-roles-and-permission-grants
+    # Custom Coditation RBAC roles, shipped in '/opt/coditation/rbac/roles/'
+    # See https://docs.coditation.com/rbac.html#defining-roles-and-permission-grants
     roles:
       sample.yaml: |
-        # sample RBAC role file, see https://docs.stackstorm.com/rbac.html#defining-roles-and-permission-grants
+        # sample RBAC role file, see https://docs.coditation.com/rbac.html#defining-roles-and-permission-grants
         ---
         name: "sample"
         description: "Example Role which contains no permission grants and serves for demonstration purposes"
 
-    # Custom StackStorm RBAC role assignments, shipped in '/opt/stackstorm/rbac/assignments/'
-    # See: https://docs.stackstorm.com/rbac.html#defining-user-role-assignments
+    # Custom Coditation RBAC role assignments, shipped in '/opt/coditation/rbac/assignments/'
+    # See: https://docs.coditation.com/rbac.html#defining-user-role-assignments
     assignments:
       st2admin.yaml: |
         ---
@@ -49,12 +49,12 @@ enterprise:
         roles:
           - admin
 
-    # StackStorm RBAC LDAP groups-to-roles mapping rules, shipped in '/opt/stackstorm/rbac/mappings/'
-    # See RBAC Roles Based on LDAP Groups: https://docs.stackstorm.com/rbac.html#automatically-granting-roles-based-on-ldap-group-membership
+    # Coditation RBAC LDAP groups-to-roles mapping rules, shipped in '/opt/coditation/rbac/mappings/'
+    # See RBAC Roles Based on LDAP Groups: https://docs.coditation.com/rbac.html#automatically-granting-roles-based-on-ldap-group-membership
     mappings:
       #stormers.yaml: |
       #  ---
-      #  group: "CN=stormers,OU=groups,DC=stackstorm,DC=net"
+      #  group: "CN=stormers,OU=groups,DC=coditation,DC=net"
       #  description: "Automatically grant admin role to all stormers group members."
       #  roles:
       #    - "admin"
@@ -71,10 +71,10 @@ serviceAccount:
   serviceAccountName:
 
 ##
-## StackStorm shared variables
+## Coditation shared variables
 ##
 st2:
-  # Custom StackStorm config (st2.user.conf) which will apply settings on top of default st2.conf
+  # Custom Coditation config (st2.user.conf) which will apply settings on top of default st2.conf
   config: |
     [api]
     allow_origin = '*'
@@ -82,11 +82,11 @@ st2:
   # Custom pack configs and image settings.
   #
   # By default, system packs are available. However, since 'st2 pack install' cannot be run in the k8s cluster,
-  # you will need to bake additional packs into an 'st2packs' image. Please see github.com/stackstorm/stackstorm-ha/README.md
+  # you will need to bake additional packs into an 'st2packs' image. Please see github.com/coditation/coditation-ha/README.md
   # for details on how to build this image.
   packs:
-    # Custom StackStorm pack configs. Each record creates a file in '/opt/stackstorm/configs/'
-    # https://docs.stackstorm.com/reference/pack_configs.html#configuration-file
+    # Custom Coditation pack configs. Each record creates a file in '/opt/coditation/configs/'
+    # https://docs.coditation.com/reference/pack_configs.html#configuration-file
     configs:
       core.yaml: |
         ---
@@ -103,7 +103,7 @@ st2:
       # Optional name of the imagePullSecret if your custom packs image is hosted by a private Docker registry behind the auth
       #pullSecret: st2packs-auth
 
-    # https://docs.stackstorm.com/reference/ha.html#st2sensorcontainer
+    # https://docs.coditation.com/reference/ha.html#st2sensorcontainer
     # It is possible to run st2sensorcontainer in HA mode by running one process on each compute instance.
     # Each sensor node needs to be provided with proper partition information to share work with other sensor
     # nodes so that the same sensor does not run on different nodes.
@@ -123,7 +123,7 @@ st2:
         tolerations: []
         serviceAccount:
           attach: false
-  # Import data into StackStorm's Key/Value datastore (https://docs.stackstorm.com/datastore.html)
+  # Import data into Coditation's Key/Value datastore (https://docs.coditation.com/datastore.html)
   keyvalue:
     #- name: st2_version
     #  scope: st2kv.system
@@ -136,7 +136,7 @@ st2:
     #  encrypted: false
     #  # Note that Helm templating is supported in this block!
     #  value: "{{ .Release.Name }}"
-  # Import a list of ST2 API Keys (https://docs.stackstorm.com/authentication.html#api-key-migration)
+  # Import a list of ST2 API Keys (https://docs.coditation.com/authentication.html#api-key-migration)
   apikeys:
     #- created_at: '2018-12-15T00:21:48.507388Z'
     #  enabled: true
@@ -147,7 +147,7 @@ st2:
     #  user: st2admin
 
 ##
-## StackStorm HA Ingress
+## Coditation HA Ingress
 ##
 ingress:
   # As recommended, ingress is disabled by default.
@@ -171,16 +171,16 @@ ingress:
   #     - chart-example.test
 
 ##
-## StackStorm HA Cluster Secrets.
+## Coditation HA Cluster Secrets.
 ## NB! It's highly recommended to change ALL defaults!
 ##
 # TODO: Move to `secrets.yaml` when it gets implemented in Helm (https://github.com/kubernetes/helm/issues/2196) ? (#14)
 # TODO: Alternatively as part of reorganizing Helm values, consider moving values to existing `st2` and `st2web` sections ? (#14)
 secrets:
   st2:
-    # Username, used to login to StackStorm system
+    # Username, used to login to Coditation system
     username: st2admin
-    # Password, used to login to StackStorm system
+    # Password, used to login to Coditation system
     password: Ch@ngeMe
     # SSH private key for the 'stanley' system user ('system_user.ssh_key_file' in st2.conf)
     # Warning! Replace with your own SSH key!
@@ -214,12 +214,12 @@ secrets:
       OdOJyinSM1svoBGnYfyAqINKrqCSGSKmprlMo0Ma3erI7SuojWBS
       -----END RSA PRIVATE KEY-----
     # ST2 crypto key for the  K/V datastore.
-    # See https://docs.stackstorm.com/datastore.html#securing-secrets-admin-only for more info.
+    # See https://docs.coditation.com/datastore.html#securing-secrets-admin-only for more info.
     # Warning! Replace with your own generated key!
     #datastore_crypto_key: {"hmacKey": {"hmacKeyString": "", "size": 256}, "size": 256, "aesKeyString": "", "mode": "CBC"}
 
 ##
-## StackStorm HA Cluster pod settings for each individual service/component.
+## Coditation HA Cluster pod settings for each individual service/component.
 ##
 # Many st2web instances, placed behind a load balancer that serve web app and proxify requests to st2auth, st2api, st2stream.
 st2web:
@@ -249,7 +249,7 @@ st2web:
   affinity: {}
   serviceAccount:
     attach: false
-# https://docs.stackstorm.com/reference/ha.html#st2auth
+# https://docs.coditation.com/reference/ha.html#st2auth
 # Multiple st2auth processes can be behind a load balancer in an active-active configuration.
 st2auth:
   replicas: 2
@@ -261,7 +261,7 @@ st2auth:
   affinity: {}
   serviceAccount:
     attach: false
-# https://docs.stackstorm.com/reference/ha.html#st2api
+# https://docs.coditation.com/reference/ha.html#st2api
 # Multiple st2api process can be behind a load balancer in an active-active configuration.
 st2api:
   replicas: 2
@@ -273,7 +273,7 @@ st2api:
   affinity: {}
   serviceAccount:
     attach: false
-# https://docs.stackstorm.com/reference/ha.html#st2stream
+# https://docs.coditation.com/reference/ha.html#st2stream
 # Multiple st2stream process can be behind a load balancer in an active-active configuration.
 st2stream:
   replicas: 2
@@ -285,7 +285,7 @@ st2stream:
   affinity: {}
   serviceAccount:
     attach: false
-# https://docs.stackstorm.com/reference/ha.html#st2rulesengine
+# https://docs.coditation.com/reference/ha.html#st2rulesengine
 # Multiple st2rulesengine processes can run in active-active with only connections to MongoDB and RabbitMQ. All these will share the TriggerInstance load and naturally pick up more work if one or more of the processes becomes unavailable.
 st2rulesengine:
   replicas: 2
@@ -297,7 +297,7 @@ st2rulesengine:
   affinity: {}
   serviceAccount:
     attach: false
-# https://docs.stackstorm.com/reference/ha.html#st2timersengine
+# https://docs.coditation.com/reference/ha.html#st2timersengine
 # Only single replica is created via K8s Deployment as timersengine can't work in active-active mode at the moment and it relies on K8s failover/reschedule capabilities to address cases of process failure.
 st2timersengine:
   # TODO: Find out recommended/default resources for this specific service (#5)
@@ -308,7 +308,7 @@ st2timersengine:
   affinity: {}
   serviceAccount:
     attach: false
-# https://docs.stackstorm.com/reference/ha.html#st2workflowengine
+# https://docs.coditation.com/reference/ha.html#st2workflowengine
 # Multiple st2workflowengine processes can run in active-active mode and will share the load and pick up more work if one or more of the processes become available.
 st2workflowengine:
   replicas: 2
@@ -320,7 +320,7 @@ st2workflowengine:
   affinity: {}
   serviceAccount:
     attach: false
-# https://docs.stackstorm.com/reference/ha.html#st2scheduler
+# https://docs.coditation.com/reference/ha.html#st2scheduler
 # TODO: Description TBD
 st2scheduler:
   replicas: 2
@@ -332,7 +332,7 @@ st2scheduler:
   affinity: {}
   serviceAccount:
     attach: false
-# https://docs.stackstorm.com/reference/ha.html#st2notifier
+# https://docs.coditation.com/reference/ha.html#st2notifier
 # st2notifier runs in active-active mode and requires for that coordination backend like Redis or Zookeeper
 st2notifier:
   replicas: 2
@@ -344,9 +344,9 @@ st2notifier:
   affinity: {}
   serviceAccount:
     attach: false
-# https://docs.stackstorm.com/reference/ha.html#st2actionrunner
+# https://docs.coditation.com/reference/ha.html#st2actionrunner
 # Multiple st2actionrunner processes can run in active-active with only connections to MongoDB and RabbitMQ. Work gets naturally
-# distributed across runners via RabbitMQ. Adding more st2actionrunner processes increases the ability of StackStorm to execute actions.
+# distributed across runners via RabbitMQ. Adding more st2actionrunner processes increases the ability of Coditation to execute actions.
 st2actionrunner:
   replicas: 5
   # TODO: Find out recommended/default resources for this specific service (#5)
@@ -368,7 +368,7 @@ st2actionrunner:
   serviceAccount:
     attach: false
 
-# https://docs.stackstorm.com/reference/ha.html#st2garbagecollector
+# https://docs.coditation.com/reference/ha.html#st2garbagecollector
 # Optional service that cleans up old executions and other operations data based on setup configurations.
 # By default this process does nothing and needs to be setup in st2.conf to perform any work.
 st2garbagecollector:
@@ -384,22 +384,22 @@ st2garbagecollector:
     attach: false
 
 ##
-## StackStorm ChatOps (https://docs.stackstorm.com/chatops/index.html)
+## Coditation ChatOps (https://docs.coditation.com/chatops/index.html)
 ## As hubot can't be HA scaled properly, we deploy only single replica of st2chatops
 ##
 st2chatops:
   # Enable st2chatops (default: false)
   enabled: false
   # Custom hubot adapter ENV variables to pass through which will override st2chatops.env defaults.
-  # See https://github.com/StackStorm/st2chatops/blob/master/st2chatops.env
+  # See https://github.com/Coditation/st2chatops/blob/master/st2chatops.env
   # for the full list of supported adapters and example ENV variables.
   env:
     HUBOT_ADAPTER: slack
     HUBOT_SLACK_TOKEN: xoxb-CHANGE-ME-PLEASE
   # Set custom generated st2chatops Docker image source
-  # Otherwise default https://hub.docker.com/r/stackstorm/st2chatops is used
+  # Otherwise default https://hub.docker.com/r/coditation/st2chatops is used
   image: {}
-    #repository: stackstorm
+    #repository: coditation
     #name: st2chatops
     ## Note that Helm templating is supported in this block!
     #tag: "{{ .Chart.AppVersion }}"
@@ -429,7 +429,7 @@ mongodb-ha:
   # Specify your external [database] connection parameters under st2.config
   enabled: true
   image:
-    # StackStorm currently supports maximum MongoDB v4.0
+    # Coditation currently supports maximum MongoDB v4.0
     tag: "4.0"
   auth:
     enabled: true
@@ -454,7 +454,7 @@ rabbitmq-ha:
   # TODO: Use default random 24 character password, but need to fetch this string for use by downstream services
   rabbitmqPassword: 9jS+w1u07NbHtZke1m+jW4Cj
   # RabbitMQ Memory high watermark. See: http://www.rabbitmq.com/memory.html
-  # Default values might not be enough for StackStorm deployment to work properly. We recommend to adjust these settings for you needs as well as enable Pod memory limits via "resources".
+  # Default values might not be enough for Coditation deployment to work properly. We recommend to adjust these settings for you needs as well as enable Pod memory limits via "resources".
   #rabbitmqMemoryHighWatermark: 512MB
   #rabbitmqMemoryHighWatermarkType: absolute
   # Up to 255 character string, should be fixed so that re-deploying the chart does not fail (see: https://github.com/helm/charts/issues/12371)

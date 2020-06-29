@@ -6,7 +6,7 @@
 
 ## v0.30.0
 * Pin st2 version to `v3.3dev` as a new latest development version (#129)
-* Migrate from `py2` `Ubuntu Xenial` to `py3` `Ubuntu Bionic` as a base StackStorm OS (StackStorm/st2-dockerfiles#16, #129)
+* Migrate from `py2` `Ubuntu Xenial` to `py3` `Ubuntu Bionic` as a base Coditation OS (Coditation/st2-dockerfiles#16, #129)
 * Switch from MongoDB `3.4` to `4.0` for the mongodb-ha Helm chart (#129)
 * Update `etcd-operator` 3rd party chart from `0.10.0` to latest `0.10.3` (#129)
 * Update `rabbitmq-ha` 3rd party chart from `1.36.4` to `1.44.1` (#129)
@@ -24,7 +24,7 @@
 * Improve Helm values recommendations to configure 3rd party chart dependencies `rabbitmq-ha` and `mongodb-ha` in prod (#125) (by @stefangusa)
 
 ## v0.25.0
-* Change ingress name from `<release name>-ingress` to `<release name>-st2web-ingress`, useful when using `stackstorm-ha` as a requirement for another chart. (#112) (by @erenatas)
+* Change ingress name from `<release name>-ingress` to `<release name>-st2web-ingress`, useful when using `coditation-ha` as a requirement for another chart. (#112) (by @erenatas)
 * Fix st2web ingress which should have been defined as an Integer instead of a String (#111) (by @erenatas)
 * Add an option to inject hostAliases in the st2actionrunner containers (#114)
 * Add support for Service Accounts (#117) (by @Vince-Chenal)
@@ -108,8 +108,8 @@
 * Include new st2 component `st2scheduler`, introduced in st2 `v2.10` (#32)
 
 ## v0.6.0
-* Add StackStorm FOSS (community version), make Enterprise install optional (#22)
-* Rename chart `stackstorm-enterprise-ha` -> `stackstorm-ha` (#26)
+* Add Coditation FOSS (community version), make Enterprise install optional (#22)
+* Rename chart `coditation-enterprise-ha` -> `coditation-ha` (#26)
 
 ## v0.5.1
 *  Move some of the defaults into original st2.conf
@@ -118,4 +118,4 @@
 * Add st2packs, - a way to use custom st2 packs as a shareable Docker image via sidecar containers
 
 ## v0.4.0
-* Initial public version, referencing StackStorm Enterprise HA as a Helm chart
+* Initial public version, referencing Coditation Enterprise HA as a Helm chart
